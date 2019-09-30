@@ -41,7 +41,7 @@ let is_comp_inductive (cG : Comp.gctx) (m : Comp.exp_syn) : bool =
   $ of_bool
   |> is_some
 
-  (*
+(*
 (** Decides whether an index object is something we're doing
     induction on, i.e. it's a metavariable with the Inductive flag set
     when we look it up in the meta-context.
@@ -60,7 +60,7 @@ let is_meta_inductive (cD : LF.mctx) (mf : LF.mfront) : bool =
   $> is_inductive_meta_variable
   $ of_bool
   |> is_some
-   *)
+ *)
 
 (** All the high-level proof tactics.
  * In general, a tactic has inputs
@@ -396,7 +396,9 @@ module Automation = struct
        true
     | _ -> false
 
-  (** Solve {v ... -> P -> ... -> P v} case automatically.
+  (** Solve
+      {v ... -> P -> ... -> P v}
+      case automatically.
       For example,
       this function will resolve
 
@@ -428,8 +430,8 @@ module Automation = struct
          let clobj = MObj (Root (ghost, head, Nil)) in
          let psi_hat = Context.dctxToHat dctx in
          Box (ghost, (ghost, ClObj (psi_hat, clobj)))
-      (** The following case is impossible because m_is_witness
-          will never return true for a DeclOpt.
+      (* The following case is impossible because m_is_witness
+         will never return true for a DeclOpt.
        *)
       | _ ->
          raise (Error.Violation "[auto_solve_trivial] Impossible case")
@@ -618,8 +620,8 @@ module Prover = struct
           s.order
       ]
     in
-    (** Checks that the given term corresponds to the given kind of invocation.
-        Without this, it is possible to invoke lemmas using `by ih`.
+    (* Checks that the given term corresponds to the given kind of invocation.
+       Without this, it is possible to invoke lemmas using `by ih`.
      *)
     let check_invocation (k : invoke_kind) cD cG (i : exp_syn) f =
       match k with
@@ -801,11 +803,17 @@ module Prover = struct
          e;
        loop ppf s tctx
 
+  (**
+     @param ppf The formatter used to display messages
+     @param name The name of the theorem to prove
+     @param stmt The statement of the theorem
+     @param order The induction order of the theorem
+   *)
   let start_toplevel
-        (ppf : Format.formatter) (* The formatter used to display messages *)
-        (name : Id.name) (* The name of the theorem to prove *)
-        (stmt : Comp.tclo) (* The statement of the theorem *)
-        (order : Comp.order option) (* The induction order of the theorem *)
+        (ppf : Format.formatter)
+        (name : Id.name)
+        (stmt : Comp.tclo)
+        (order : Comp.order option)
       : unit =
     let g = Comp.make_proof_state stmt in
     let s = make_prover_state name order g in
